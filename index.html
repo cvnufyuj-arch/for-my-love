@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ถามอะไรหน่อยสิ ❤️</title>
+    <style>
+        body { font-family: sans-serif; background: #ffe6e6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .container { text-align: center; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: 85%; max-width: 400px; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        h1 { color: #ff4d6d; font-size: 22px; margin-bottom: 10px; }
+        p { font-size: 16px; color: #555; line-height: 1.5; }
+        .page { display: none; width: 100%; }
+        .active { display: block; }
+        .buttons { margin-top: 20px; display: flex; justify-content: center; gap: 15px; position: relative; height: 50px; width: 100%; }
+        button { padding: 12px 25px; font-size: 16px; border: none; border-radius: 25px; cursor: pointer; }
+        .btn-pink { background: #ff4d6d; color: white; }
+        .btn-gray { background: #f0f0f0; color: #333; border: 1px solid #ddd; }
+        #noBtn { background: #777; color: white; position: absolute; }
+        .typewriter { text-align: left; background: #fff5f5; padding: 15px; border-radius: 10px; border-left: 4px solid #ff4d6d; min-height: 80px; margin-top: 15px; }
+        .gift-box { font-size: 60px; cursor: pointer; margin: 20px 0; transition: transform 0.2s; }
+        .gift-box:hover { transform: scale(1.1); }
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- หน้า 1 -->
+        <div id="page1" class="page active">
+            <h1>วันนี้รักเค้าไหม? 🥰</h1>
+            <div class="buttons">
+                <button class="btn-pink" onclick="nextPage(2)">รักที่สุด</button>
+                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">ไม่รัก</button>
+            </div>
+        </div>
+        <!-- หน้า 2 -->
+        <div id="page2" class="page">
+            <h1>คำถาม: ใครดื้อกว่ากัน? 🤔</h1>
+            <p id="quizHint">(ตอบให้ถูกน้า)</p>
+            <div class="buttons" style="flex-direction: column; height: auto; gap: 10px;">
+                <button class="btn-gray" onclick="alert('คิดใหม่ๆ กดอีกปุ่มเลย! 😜')">เค้าเอง (แฟนดื้อ)</button>
+                <button class="btn-pink" onclick="document.getElementById('quizHint').innerText='ถูกต้องที่สุด! 🎉'; document.getElementById('to3').style.display='block';">ตัวเอ๊งงง (คุณดื้อ)</button>
+            </div>
+            <button class="btn-pink" id="to3" style="display:none; margin-top:20px; width: 100%;" onclick="nextPage(3)">ผ่านด่านแล้ว! ไปต่อ ➡️</button>
+        </div>
+        <!-- หน้า 3 -->
+        <div id="page3" class="page">
+            <h1>ความในใจจากเค้า ✍️</h1>
+            <div class="typewriter" id="secretLetter"></div>
+            <button class="btn-pink" id="to4" style="display:none; margin-top:20px;" onclick="nextPage(4)">อ่านจบแล้วไปต่อกัน 💖</button>
+        </div>
+        <!-- หน้า 4 -->
+        <div id="page4" class="page">
+            <h1>รูปคู่ที่ชอบที่สุด 📸</h1>
+            <div style="font-size: 60px; margin: 15px;" onclick="popHeart()">👩‍❤️‍👨</div>
+            <p>จิ้มที่อีโมจิรูปคู่สิ มีหัวใจซ่อนอยู่ด้วยนะ</p>
+            <button class="btn-pink" style="margin-top:15px;" onclick="nextPage(5)">หน้าสุดท้ายแล้ว 🎁</button>
+        </div>
+        <!-- หน้า 5 -->
+        <div id="page5" class="page">
+            <h1>จิ้มเปิดกล่องของขวัญสิ! 🎉</h1>
+            <div class="gift-box" id="gift" onclick="openGift()">🎁</div>
+            <div id="surpriseText" style="display:none;">
+                <h2 style="color: #ff4d6d; margin: 10px 0;">ขอบคุณที่เป็นแฟนที่ดีที่สุดนะ ❤️</h2>
+                <p>อยู่เป็นความสุขของกันและกันแบบนี้ไปนานๆ เลยนะงับ ✨</p>
+                <div style="font-size: 40px; margin-top: 15px;">💕👑🎂🥂</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const randomX = Math.floor(Math.random() * 140) - 70;
+            const randomY = Math.floor(Math.random() * 100) - 50;
+            noBtn.style.left = `calc(50% - 40px + ${randomX}px)`;
+            noBtn.style.top = `${randomY}px`;
+        }
+        function nextPage(pageNum) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page${pageNum}`).classList.add('active');
+            if(pageNum === 3) startTyping();
+        }
+        const textToType = "ขอบคุณสำหรับทุกๆ วันที่ผ่านมาเลยนะ การมีเธออยู่ในชีวิตมันดีมากๆ เลย ขอบคุณที่คอยดูแลและอยู่ข้างกันเสมอ อยากบอกว่ารักเธอมากๆ ในทุกๆ วันเลยนะคนเก่ง ❤️";
+        let index = 0;
+        function startTyping() {
+            if (index < textToType.length) {
+                document.getElementById("secretLetter").innerHTML += textToType.charAt(index);
+                index++;
+                setTimeout(startTyping, 60);
+            } else {
+                document.getElementById("to4").style.display = "inline-block";
+            }
+        }
+        function popHeart() {
+            for (let i = 0; i < 5; i++) {
+                const heart = document.createElement('div');
+                heart.innerText = '💖';
+                heart.style.position = 'fixed';
+                heart.style.left = (Math.random() * 40 + 30) + 'vw';
+                heart.style.top = '50vh';
+                heart.style.fontSize = '30px';
+                heart.style.animation = `fall 1.5s linear forwards`;
+                document.body.appendChild(heart);
+            }
+        }
+        function openGift() {
+            document.getElementById("gift").innerText = "🔓💝";
+            document.getElementById("surpriseText").style.display = "block";
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.innerText = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '-5vh';
+                heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+                heart.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+                document.body.appendChild(heart);
+            }
+        }
+    </script>
+</body>
+</html>
+
